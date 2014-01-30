@@ -39,4 +39,5 @@ http {
 
   include <%= node[:nginx][:dir] %>/conf.d/*.conf;
   include <%= node[:nginx][:dir] %>/sites-enabled/*;
+  large_client_header_buffers 4 16k;
 }
