@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe 'apt::default'
+
 apt_repository 'nginx' do
   uri          "http://nginx.org/packages/#{node['platform']}"
   distribution node['lsb']['codename']
