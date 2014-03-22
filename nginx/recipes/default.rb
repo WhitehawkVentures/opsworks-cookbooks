@@ -18,19 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'apt::default'
-
-apt_repository 'nginx' do
-  uri          "http://nginx.org/packages/#{node['platform']}"
-  distribution node['lsb']['codename']
-  components   %w(nginx)
-  deb_src      true
-  key          'http://nginx.org/keys/nginx_signing.key'
-end
-
-package "nginx" do
-  version "1.4.7"
-end
+package "nginx"
 
 directory node[:nginx][:dir] do
   owner 'root'
