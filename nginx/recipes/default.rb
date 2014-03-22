@@ -18,7 +18,9 @@
 # limitations under the License.
 #
 
-package "nginx"
+package "nginx" do
+  version "1.4.7"
+end
 
 directory node[:nginx][:dir] do
   owner 'root'
