@@ -18,6 +18,14 @@
 # limitations under the License.
 #
 
+apt_repository 'nginx' do
+  uri          "http://nginx.org/packages/#{node['platform']}"
+  distribution node['lsb']['codename']
+  components   %w(nginx)
+  deb_src      true
+  key          'http://nginx.org/keys/nginx_signing.key'
+end
+
 package "nginx" do
   version "1.4.7"
 end
