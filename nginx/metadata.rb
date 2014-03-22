@@ -6,6 +6,7 @@ version           "0.8"
 
 %w{ ubuntu debian }.each do |os|
   supports os
+  depends "apt"
 end
 
 attribute "nginx/dir",
