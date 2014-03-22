@@ -18,16 +18,15 @@
 # limitations under the License.
 #
 
-#include_recipe "apt"
+include_recipe 'apt::default'
 
-#apt_repository "nginx" do
-#  uri "http://ppa.launchpad.net/nginx/stable/ubuntu"
-#  distribution 'precise'
-#  components ["main"]
-#  keyserver "keyserver.ubuntu.com"
-#  key "C300EE8C"
-#  action :add
-#end
+apt_repository 'nginx' do
+  uri          "http://nginx.org/packages/#{node['platform']}"
+  distribution node['lsb']['codename']
+  components   %w(nginx)
+  deb_src      true
+  key          'http://nginx.org/keys/nginx_signing.key'
+end
 
 package "nginx"
 
