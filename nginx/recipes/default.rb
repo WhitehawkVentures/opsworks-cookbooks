@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+#include_recipe "apt"
 
 #apt_repository "nginx" do
 #  uri "http://ppa.launchpad.net/nginx/stable/ubuntu"
