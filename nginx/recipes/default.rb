@@ -20,14 +20,14 @@
 
 include_recipe "apt"
 
-apt_repository "nginx" do
-  uri "http://ppa.launchpad.net/nginx/stable/ubuntu"
-  distribution 'precise'
-  components ["main"]
-  keyserver "keyserver.ubuntu.com"
-  key "C300EE8C"
-  action :add
-end
+#apt_repository "nginx" do
+#  uri "http://ppa.launchpad.net/nginx/stable/ubuntu"
+#  distribution 'precise'
+#  components ["main"]
+#  keyserver "keyserver.ubuntu.com"
+#  key "C300EE8C"
+#  action :add
+#end
 
 package "nginx"
 
