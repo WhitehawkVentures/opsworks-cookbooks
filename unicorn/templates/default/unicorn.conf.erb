@@ -27,9 +27,21 @@ end
 before_fork do |server, worker|
   # the following is highly recomended for Rails + "preload_app true"
   # as there's no need for the master process to hold a connection
-  if defined?(ActiveRecord::Base)
-    ActiveRecord::Base.connection.disconnect!
-  end
+if defined?(ActiveRecord::Base)
+ActiveRecord::Base.connection.disconnect!
+ActiveRecord::Base.connection_proxy.instance_variable_get(:@shards).each do |shard, connection_pool|
+connection_pool.disconnect!
+end
+Rails.logger.info('Disconnected from ActiveRecord')
+end
+if defined?(Resque)
+Resque.redis.quit
+Rails.logger.info('Disconnected from Redis')
+end
+Signal.trap 'TERM' do
+puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
+Process.kill 'QUIT', Process.pid
+end
 
   # Before forking, kill the master process that belongs to the .oldbin PID.
   # This enables 0 downtime deploys.
@@ -45,9 +57,26 @@ end
 
 after_fork do |server, worker|
   # the following is *required* for Rails + "preload_app true",
-  if defined?(ActiveRecord::Base)
-    ActiveRecord::Base.establish_connection
-  end
+if defined?(ActiveRecord::Base)
+if defined?(ActiveRecord::Base) && defined?(ActiveSupport)
+
+ActiveSupport.on_load(:active_record) do
+
+cfg = Rails.application.config.database_configuration[Rails.env]
+ActiveRecord::Base.establish_connection(cfg)
+#no need to set master on the config ... intialize_shards will try to grab config for master from the current connection
+ActiveRecord::Base.connection.initialize_shards(Octopus.config)
+end
+end
+Rails.logger.info('Connected to ActiveRecord')
+end
+if defined?(Resque)
+Resque.redis.client.reconnect
+end
+
+Signal.trap 'TERM' do
+puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to sent QUIT'
+end
 
   # if preload_app is true, then you may also want to check and
   # restart any other shared sockets/descriptors such as Memcached,
