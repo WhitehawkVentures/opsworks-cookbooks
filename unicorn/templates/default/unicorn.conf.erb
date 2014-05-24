@@ -29,8 +29,10 @@ before_fork do |server, worker|
   # as there's no need for the master process to hold a connection
 if defined?(ActiveRecord::Base)
 ActiveRecord::Base.connection.disconnect!
+if defined?(ActiveRecord::Base.connection_proxy)
 ActiveRecord::Base.connection_proxy.instance_variable_get(:@shards).each do |shard, connection_pool|
 connection_pool.disconnect!
+end
 end
 Rails.logger.info('Disconnected from ActiveRecord')
 end
@@ -65,7 +67,9 @@ ActiveSupport.on_load(:active_record) do
 cfg = Rails.application.config.database_configuration[Rails.env]
 ActiveRecord::Base.establish_connection(cfg)
 #no need to set master on the config ... intialize_shards will try to grab config for master from the current connection
+if defined?(ActiveRecord::Base.connection.initialize_shards)
 ActiveRecord::Base.connection.initialize_shards(Octopus.config)
+end
 end
 end
 Rails.logger.info('Connected to ActiveRecord')
