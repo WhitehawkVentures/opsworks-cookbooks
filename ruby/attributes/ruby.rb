@@ -10,10 +10,10 @@ rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
 
 # ruby_version 1.8.7 is handled by 'ruby-enterprise'
 case node["opsworks"]["ruby_version"]
-when "2.1"
+when "2.1", "2.1.2"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '1'
-  set[:ruby][:patch_version] = '2'
+  default[:ruby][:patch_version] = '2'
   default[:ruby][:pkgrelease]    = '1'
 
   i = node[:ruby]
