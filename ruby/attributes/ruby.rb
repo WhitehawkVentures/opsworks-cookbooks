@@ -1,6 +1,9 @@
 include_attribute 'opsworks_initial_setup::default'
 include_attribute 'opsworks_commons::default'
 
+arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
+rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
+
 # ruby_version 1.8.7 is handled by 'ruby-enterprise'
 case node["opsworks"]["ruby_version"]
 when "2.1"
@@ -33,10 +36,8 @@ end
 
 default[:ruby][:version] = "#{node[:ruby][:full_version]}#{node[:ruby][:patch]}"
 
-arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 default[:ruby][:deb] = "opsworks-ruby#{node[:ruby][:major_version]}_#{node[:ruby][:full_version]}-#{node[:ruby][:patch]}.#{node[:ruby][:pkgrelease]}_#{arch}.deb"
 default[:ruby][:deb_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{node[:ruby][:deb]}"
 
-rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
 default[:ruby][:rpm] = "opsworks-ruby#{node[:ruby][:major_version].delete('.')}-#{node[:ruby][:full_version]}-#{node[:ruby][:patch]}-#{node[:ruby][:pkgrelease]}.#{rhel_arch}.rpm"
 default[:ruby][:rpm_url] = "#{node[:opsworks_commons][:assets_url]}/packages/#{node[:platform]}/#{node[:platform_version]}/#{node[:ruby][:rpm]}"
