@@ -14,12 +14,15 @@ when "2.1", "2.1.2"
   default[:ruby][:major_version] = '2'
   default[:ruby][:minor_version] = '1'
   default[:ruby][:patch_version] = '2'
+  set[:ruby][:patch_version] = default[:ruby][:patch_version]
   default[:ruby][:pkgrelease]    = '1'
 
   i = node[:ruby]
   default[:ruby][:version] = "#{i[:major_version]}.#{i[:minor_version]}.#{i[:patch_version]}"
+  set[:ruby][:version] = default[:ruby][:version]
   default[:ruby][:full_version] = default[:ruby][:version]
   default[:ruby][:deb] = "opsworks-ruby#{i[:major_version]}.#{i[:minor_version]}_#{i[:major_version]}.#{i[:minor_version]}.#{i[:patch_version]}.#{i[:pkgrelease]}_#{arch}.deb"
+  set[:ruby][:deb] = default[:ruby][:deb]
   default[:ruby][:rpm] = "opsworks-ruby#{i[:major_version]}#{i[:minor_version]}-#{i[:major_version]}.#{i[:minor_version]}.#{i[:patch_version]}-#{i[:pkgrelease]}.#{rhel_arch}.rpm"
 when "2.0.0"
   default[:ruby][:major_version] = '2.0'
