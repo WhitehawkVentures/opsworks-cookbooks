@@ -2,7 +2,7 @@
 # enables updating stack from ruby 1.9 to ruby 2.0
 # currently we only support one user sapce ruby installation
 
-Chef::Log.info("JBB: running ruby/recipes/default.rb, node['ruby']['version']=#{node['ruby']['version']}, node["opsworks"]["ruby_version"]=#{node["opsworks"]["ruby_version"]}")
+Chef::Log.info("JBB: running ruby/recipes/default.rb, node['ruby']['version']=#{node['ruby']['version']}, node['opsworks']['ruby_version']=#{node['opsworks']['ruby_version']}")
 
 local_ruby_up_to_date = ::File.exists?(node[:ruby][:executable]) &&
                         system("#{node[:ruby][:executable]} -v | grep '#{node['ruby']['version']}' > /dev/null 2>&1") &&
