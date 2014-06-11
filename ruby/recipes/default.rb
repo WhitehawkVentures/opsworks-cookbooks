@@ -2,6 +2,8 @@
 # enables updating stack from ruby 1.9 to ruby 2.0
 # currently we only support one user sapce ruby installation
 
+Chef::Log.info("JBB: running ruby/recipes/default.rb")
+
 local_ruby_up_to_date = ::File.exists?(node[:ruby][:executable]) &&
                         system("#{node[:ruby][:executable]} -v | grep '#{node['ruby']['version']}' > /dev/null 2>&1") &&
                         if ['debian','ubuntu'].include?(node[:platform])
@@ -78,6 +80,10 @@ execute "Install Ruby #{node[:ruby][:full_version]}" do
     end
   end
 end
+
+dpkg_filename_JBB = "/tmp/#{node['ruby']['deb']}"
+ls_dpkg_filename_JBB = lambda { exec "ls -l #{dpkg_filename_JBB}" }.call
+Chef::Log.info("JBB: ruby/recipes/default.rb: dpkg file=#{dpkg_filename_JBB} ls=#{ls_dpkg_filename_JBB}")
 
 execute 'Delete downloaded ruby packages' do
   command "rm -vf /tmp/#{node[:ruby][:deb]} /tmp/#{node[:ruby][:rpm]}"

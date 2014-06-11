@@ -1,6 +1,10 @@
+Chef::Log.info("JBB: running ruby/attributes/ruby.rb")
+
 include_attribute 'opsworks_initial_setup::default'
 include_attribute 'opsworks_commons::default'
 
+_platform = node[:platform]
+_platform_version = node[:platform_version]
 arch = RUBY_PLATFORM.match(/64/) ? 'amd64' : 'i386'
 rhel_arch = RUBY_PLATFORM.match(/64/) ? 'x86_64' : 'i686'
 
