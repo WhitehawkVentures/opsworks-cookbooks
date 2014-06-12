@@ -4,6 +4,15 @@
 
 Chef::Log.info("JBB: running ruby/recipes/default.rb, node['ruby']['version']=#{node['ruby']['version']}, node['opsworks']['ruby_version']=#{node['opsworks']['ruby_version']}")
 
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['major_version']=#{node['ruby']['major_version'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['minor_version']=#{node['ruby']['minor_version'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['patch_version']=#{node['ruby']['patch_version'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['patch']=#{node['ruby']['patch'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['pkgrelease']=#{node['ruby']['pkgrelease'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['full_version']=#{node['ruby']['full_version'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['deb']=#{node['ruby']['deb'].inspect}")
+Chef::Log.info("JBB: ruby/recipes/default.rb: node['ruby']['deb_url']=#{node['ruby']['deb_url'].inspect}")
+
 local_ruby_up_to_date = ::File.exists?(node[:ruby][:executable]) &&
                         system("#{node[:ruby][:executable]} -v | grep '#{node['ruby']['version']}' > /dev/null 2>&1") &&
                         if ['debian','ubuntu'].include?(node[:platform])
