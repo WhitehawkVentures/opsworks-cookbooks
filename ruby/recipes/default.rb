@@ -84,6 +84,8 @@ end
 dpkg_filename_JBB = "/tmp/#{node['ruby']['deb']}"
 ls_dpkg_filename_JBB = lambda { `ls -l #{dpkg_filename_JBB}` }.call
 Chef::Log.info("JBB: ruby/recipes/default.rb: dpkg file=#{dpkg_filename_JBB} ls=#{ls_dpkg_filename_JBB}")
+ls_tmp_JBB = lambda { `ls -l /tmp` }.call
+Chef::Log.info("JBB: ruby/recipes/default.rb: ls -l /tmp=#{ls_tmp_JBB}")
 
 execute 'Delete downloaded ruby packages' do
   command "rm -vf /tmp/#{node[:ruby][:deb]} /tmp/#{node[:ruby][:rpm]}"
