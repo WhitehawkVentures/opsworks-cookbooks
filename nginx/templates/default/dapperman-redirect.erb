@@ -1,0 +1,6 @@
+server {
+  #implemented by default, change if you need different ip or port
+  #listen *:80 | *:8000;
+  server_name mintyspice.com www.mintspice.com dapperman.com www.dapperman.com;
+  return 301 https://dapperman.touchofmodern.com$request_uri;
+}

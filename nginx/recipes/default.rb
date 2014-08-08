@@ -74,6 +74,13 @@ template "#{node[:nginx][:dir]}/sites-available/default" do
   mode 0644
 end
 
+template "#{node[:nginx][:dir]}/sites-available/dapperman-redirect" do
+  source "dapperman-redirect.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 include_recipe "nginx::service"
 
 service "nginx" do
