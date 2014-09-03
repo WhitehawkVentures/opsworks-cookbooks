@@ -1,0 +1,6 @@
+server {
+#implemented by default, change if you need different ip or port
+#listen *:80 | *:8000;
+server_name staging.dapperman.com;
+return 301 https://staging.dapperman.touchofmodern.com$request_uri;
+}
