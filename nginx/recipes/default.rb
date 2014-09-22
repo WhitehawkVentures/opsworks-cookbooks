@@ -81,6 +81,13 @@ template "#{node[:nginx][:dir]}/sites-available/dapperman-redirect" do
   mode 0644
 end
 
+template "#{node[:nginx][:dir]}/sites-available/dapperman-staging-redirect" do
+  source "dapperman-staging-redirect.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 include_recipe "nginx::service"
 
 service "nginx" do
