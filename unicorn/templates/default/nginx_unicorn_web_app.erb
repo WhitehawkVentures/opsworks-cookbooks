@@ -68,6 +68,10 @@ server {
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
+    if (-f $document_root/maintenance_mode) {
+      return 503;
+    }
+
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
     if (!-f $request_filename) {
@@ -76,9 +80,14 @@ server {
     }
   }
 
-  error_page 500 502 503 504 /500.html;
+  error_page 500 502 504 /500.html;
   location = /500.html {
     root <%= @application[:absolute_document_root] %>;
+  }
+
+  error_page 503 @maintenance;
+  location @maintenance {
+    rewrite ^(.*)$ /maintenance.html break;
   }
 }
 <% end %>
