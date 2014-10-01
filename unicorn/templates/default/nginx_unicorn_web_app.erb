@@ -1,3 +1,5 @@
+<% maintenance_mode_filename = "#{@application[:absolute_document_root]}/maintenance_mode" %>
+
 upstream unicorn_<%= @application[:domains].first %> {
  server unix:<%= @application[:deploy_to]%>/shared/sockets/unicorn.sock fail_timeout=0;
 }
@@ -68,7 +70,7 @@ server {
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
-    if (-f $document_root/maintenance_mode) {
+    if (-f <%= maintenance_mode_filename %>) {
       return 503;
     }
 
@@ -86,7 +88,7 @@ server {
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
-    if (-f $document_root/maintenance_mode) {
+    if (-f <%= maintenance_mode_filename %>) {
       rewrite ^(.*)$ /about_maintenance.html break;
     }
 
