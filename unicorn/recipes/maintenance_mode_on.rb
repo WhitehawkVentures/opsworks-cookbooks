@@ -1,3 +1,3 @@
-execute "touch #{deploy[:absolute_document_root]}maintenance_mode" do
-  command "/usr/bin/touch #{deploy[:absolute_document_root]}maintenance_mode"
+execute "touch #{node[:nginx][:absolute_document_root]}maintenance_mode" do
+  command "/usr/bin/touch #{node[:nginx][:absolute_document_root]}maintenance_mode"
 end
