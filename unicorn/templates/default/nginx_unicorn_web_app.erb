@@ -1,4 +1,4 @@
-<% maintenance_mode_filename = "#{@application[:absolute_document_root]}maintenance_mode" %>
+<% maintenance_mode_filename = "/etc/maintenance_mode" %>
 
 upstream unicorn_<%= @application[:domains].first %> {
  server unix:<%= @application[:deploy_to]%>/shared/sockets/unicorn.sock fail_timeout=0;
