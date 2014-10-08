@@ -1,3 +1,5 @@
+<% maintenance_mode_filename = "/etc/maintenance_mode" %>
+
 upstream unicorn_<%= @application[:domains].first %> {
  server unix:<%= @application[:deploy_to]%>/shared/sockets/unicorn.sock fail_timeout=0;
 }
@@ -20,6 +22,10 @@ server {
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
+    if (-f <%= maintenance_mode_filename %>) {
+      return 503;
+    }
+
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
     if (!-f $request_filename) {
@@ -35,9 +41,14 @@ server {
     deny all;
   }
 
-  error_page 500 502 503 504 /500.html;
+  error_page 500 502 504 /500.html;
   location = /500.html {
     root <%= @application[:absolute_document_root] %>;
+  }
+
+  error_page 503 @maintenance;
+  location @maintenance {
+    rewrite ^(.*)$ /maintenance.html break;
   }
 }
 
@@ -68,6 +79,10 @@ server {
     proxy_set_header Host $http_host;
     proxy_redirect off;
 
+    if (-f <%= maintenance_mode_filename %>) {
+      return 503;
+    }
+
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
     if (!-f $request_filename) {
@@ -76,9 +91,32 @@ server {
     }
   }
 
-  error_page 500 502 503 504 /500.html;
+  location /about {
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+
+    if (-f <%= maintenance_mode_filename %>) {
+      rewrite ^(.*)$ /maintenance.html break;
+    }
+
+    # If you don't find the filename in the static files
+    # Then request it from the unicorn server
+    if (!-f $request_filename) {
+      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      break;
+    }
+  }
+
+  error_page 500 502 504 /500.html;
   location = /500.html {
     root <%= @application[:absolute_document_root] %>;
+  }
+
+  error_page 503 @maintenance;
+  location @maintenance {
+    rewrite ^(.*)$ /maintenance.html break;
   }
 }
 <% end %>
