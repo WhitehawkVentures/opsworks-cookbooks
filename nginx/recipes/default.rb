@@ -88,6 +88,13 @@ template "#{node[:nginx][:dir]}/sites-available/dapperman-staging-redirect" do
   mode 0644
 end
 
+template "#{node[:nginx][:dir]}/sites-available/touchofmodern-redirect" do
+  source "touchofmodern-redirect.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 include_recipe "nginx::service"
 
 service "nginx" do
