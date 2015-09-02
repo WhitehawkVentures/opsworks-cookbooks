@@ -18,6 +18,17 @@
 # limitations under the License.
 #
 
+#include_recipe 'apt'
+
+#apt_repository 'nginx' do
+#  uri		"http://ppa.launchpad.net/nginx/stable/ubuntu"
+#  distribution 	'precise'
+#  components 	["main"]
+#  keyserver	"keyserver.ubuntu.com"
+#  key 		'C300EE8C'
+#  action 	:add
+#end
+
 package "nginx"
 
 directory node[:nginx][:dir] do
@@ -59,6 +70,27 @@ end
 
 template "#{node[:nginx][:dir]}/sites-available/default" do
   source "default-site.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+template "#{node[:nginx][:dir]}/sites-available/dapperman-redirect" do
+  source "dapperman-redirect.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+template "#{node[:nginx][:dir]}/sites-available/dapperman-staging-redirect" do
+  source "dapperman-staging-redirect.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+template "#{node[:nginx][:dir]}/sites-available/touchofmodern-redirect" do
+  source "touchofmodern-redirect.erb"
   owner "root"
   group "root"
   mode 0644

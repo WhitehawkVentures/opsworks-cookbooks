@@ -1,0 +1,7 @@
+server {
+  #implemented by default, change if you need different ip or port
+  #listen *:80 | *:8000;
+  server_name touchofmodern.com;
+  return 301 https://www.touchofmodern.com$request_uri;
+} 
+

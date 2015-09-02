@@ -12,6 +12,7 @@ global
   <% else %>
   stats socket <%= node[:haproxy][:stats_socket_path] %>
   <% end %>
+  tune.maxrewrite 1024
 
 defaults
   log             global
